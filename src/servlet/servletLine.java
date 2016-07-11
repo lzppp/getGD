@@ -24,7 +24,7 @@ public class servletLine extends HttpServlet{
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         //System.out.println(request.getParameter("count").toString());
-        serviceLine.write(request.getParameter("name").toString(),request.getParameter("path").toString());
+        serviceLine.write(request.getParameter("name").toString(),request.getParameter("path").toString(),request.getParameter("id").toString());
 /*        String name = request.getParameter("name");
         String langutide = request.getParameter("langutide");
         String latitude = request.getParameter("langutide");

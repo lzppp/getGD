@@ -23,7 +23,7 @@ public class servlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         //System.out.println(request.getParameter("count").toString());
-        service.write(request.getParameter("name").toString(),request.getParameter("lng").toString(),request.getParameter("lat").toString());
+        service.write(request.getParameter("stopid").toString(),request.getParameter("name").toString(),request.getParameter("lng").toString(),request.getParameter("lat").toString());
 /*        String name = request.getParameter("name");
         String langutide = request.getParameter("langutide");
         String latitude = request.getParameter("langutide");

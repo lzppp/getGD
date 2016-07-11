@@ -20,4 +20,14 @@
     <servlet-name>ServletLine</servlet-name>
     <url-pattern>/ServletLine</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <description></description>
+    <display-name>ServletStop</display-name>
+    <servlet-name>ServletStop</servlet-name>
+    <servlet-class>servlet.servletStop</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletStop</servlet-name>
+    <url-pattern>/ServletStop</url-pattern>
+  </servlet-mapping>
  </web-app>

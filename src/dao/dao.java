@@ -2,6 +2,7 @@ package dao;
 import java.sql.Connection;  
 import java.sql.DriverManager;  
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
   
 public class dao { 
@@ -20,13 +21,57 @@ public class dao {
         }
         return conn;
     }
-    public boolean setUser(station aStation) {
+    public boolean LineisExisted(String LineID){
+    	try {
+        	conn = getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("select * from get_line where pathid = ?");
+            preparedStatement.setString(1, LineID);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (!rs.next()){
+            	conn.close();
+            	return false;
+            }
+            conn.close();
+    	}
+    	catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    	
+    	
+        return true;
+    }
+    public boolean POIisExisted(String id,String lng,String lat){
+    	try {
+        	conn = getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("select * from get_poi where stationid = ? and longitude = ? and latitude = ?");
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, lng);
+            preparedStatement.setString(3, lat);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (!rs.next()){
+            	conn.close();
+            	return false;
+            }
+            conn.close();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    	
+    	
+        return true;
+    }
+    public boolean setPOI(station aStation) {
         try {
         	conn = getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO get_copy (name,longitude,latitude) VALUES(?,?,?)");
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO get_poi (name,longitude,latitude,stationid) VALUES(?,?,?,?)");
             preparedStatement.setString(1, aStation.name);
             preparedStatement.setString(2, aStation.longitude);
             preparedStatement.setString(3, aStation.latitude);
+            preparedStatement.setString(4, aStation.id);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             conn.close();
@@ -51,9 +96,10 @@ public class dao {
 		// TODO Auto-generated method stub
 		 try {
 	        	conn = getConnection();
-	            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO get_line (name,path) VALUES(?,?)");
+	            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO get_line (name,path,pathid) VALUES(?,?,?)");
 	            preparedStatement.setString(1, aline.name);
 	            preparedStatement.setString(2, aline.path);
+	            preparedStatement.setString(3, aline.id);
 	            preparedStatement.executeUpdate();
 	            preparedStatement.close();
 	            conn.close();
@@ -65,5 +111,46 @@ public class dao {
 	        }
 	        return true;
 	   }
+	public boolean setRelation(String stopid, String pathid , String seq) {
+		// TODO Auto-generated method stub
+		try {
+        	conn = getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO get_relation (stopid,pathid,seq) VALUES(?,?,?)");
+            preparedStatement.setString(1,stopid);
+            preparedStatement.setString(2,pathid);
+            preparedStatement.setString(3,seq);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            conn.close();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	public boolean RelationisExisted(String stopid, String pathid) {
+		try {
+        	conn = getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("select * from get_relation where stopid = ? and pathid = ?");
+            preparedStatement.setString(1, stopid);
+            preparedStatement.setString(2, pathid);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (!rs.next()){
+            	conn.close();
+            	return false;
+            }
+            conn.close();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    	
+    	
+        return true;
+	}
 	
 }

@@ -14,7 +14,7 @@
     <title>公交线路查询</title>
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
     <script type="text/javascript"
-            src="http://webapi.amap.com/maps?v=1.3&key=3f9bc1d537596690d1cdd74ac18e3b7d&plugin=AMap.LineSearch"></script>
+            src="http://webapi.amap.com/maps?v=1.3&key=b48d73a13bfac780f8afc0480e217266&plugin=AMap.LineSearch"></script>
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.0.0/jquery.js"></script>
 </head>
@@ -36,9 +36,8 @@
     });
     /*公交线路查询*/
     var count = 1; //页数
-    var linecount = 0; //遍历公交线的名称编号上面的数字
     function lineSearch() {
-        for (var i = 0 ; i < 200 ; i++){ 
+        for (var i = 100 ; i < 200 ; i++){ 
         	setTimeout(1000);
 	        var linesearch = new AMap.LineSearch({
 	            pageIndex: count,
@@ -47,12 +46,12 @@
 	            extensions: 'all'
 	        });
 	        //搜索“536”相关公交线路
-	        linecount = linecount + 1;
-	        linesearch.search(linecount.toString(), function(status, result) {
+	        //console.log(i);
+	        linesearch.search(i.toString(), function(status, result) {
 	            if (status === 'complete' && result.info === 'OK') {
 	                lineSearch_Callback(result);
 	            } else {
-	                alert(result);
+	                console.log(result);
 	            }
 	        });
         }
@@ -71,14 +70,17 @@
                 var pathArr = lineArr[i].path;
                 var stops = lineArr[i].via_stops;
                 var path = pathToString(pathArr);
+                var stopString = stopdoing(stops,lineArr[i].id);
                 console.log(lineArr[i].name.toString());
                 $.ajax({
     				type:"POST",
     				aysnc:false,
     				url:"ServletLine",
     				data:{
+    					"id":lineArr[i].id,
     					"name":lineArr[i].name.toString(),
     					"path":path,
+    					"stop":stopString,
     				},
     			    dataType:'text',
     			    success:function(msg){
@@ -100,6 +102,33 @@
     	}
     	return path;
     };
+    function stopdoing(stops ,pathid){//处理(stops)
+    	for (var i = 0;i < stops.length ; i++){
+    		lng = stops[i].location.lng;
+    		lat = stops[i].location.lat;
+    		name = stops[i].name;
+    		stopid = stops[i].id;
+    		$.ajax({
+			type:"POST",
+			aysnc:false,
+			url:"ServletStop",
+			data:{
+				"pathid":pathid,
+				"stopid":stopid,
+				"name":name,
+				"lng":lng,
+				"lat":lat,
+				"seq":(i+1).toString(),
+			},
+		    dataType:'text',
+		    success:function(msg){
+		    	/*var message = eval(msg);*/
+		    	//alert(msg);
+		    }
+			
+			});//ajax生成站点和线路关系
+    	}
+    }
 </script>
 </body>
 </html>  

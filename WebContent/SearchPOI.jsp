@@ -27,7 +27,7 @@
             border-bottom: solid 1px silver;
         }
     </style>
-    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=3f9bc1d537596690d1cdd74ac18e3b7d"></script>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=b48d73a13bfac780f8afc0480e217266"></script>
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.0.0/jquery.js"></script>
 </head>
@@ -40,16 +40,14 @@ var map = new AMap.Map("container", {
 });
 var ok = true;
 var count= 0;
-while(ok){
-	if (count == 20)
-		break;
+for (var i = 0;i < 20;i++){
 	count++;
 	console.log(count);
 	AMap.service(["AMap.PlaceSearch"], function() {
 	    var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
 	        pageSize: 60,
 	        pageIndex: count,
-	        city: "海口", //城市
+	        city: "010", //城市
 	        map: map,
 	        panel: "panel"
 	    });

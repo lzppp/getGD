@@ -2,12 +2,14 @@ package dao;
 public class Line{
 	String name = null;
 	String path = null;
-	public Line(String aname,String apath) {
+	String id = null;
+	public Line(String aname,String apath,String aid) {
 		// TODO Auto-generated constructor stub
 		this.name = aname;
 		this.path = apath;
+		this.id = aid;
 	}
 	public String toString(){
-		return name+path;
+		return id+name+path;
 	}
 }
